@@ -86,7 +86,7 @@ public class Engine {
     }
 
     private boolean stepIn(int x, int y) {
-        if (map[x][y] == 0) {
+        if (map[y][x] == 0) {
             playerX = x;
             playerY = y;
             return true;

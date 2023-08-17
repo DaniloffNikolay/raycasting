@@ -133,6 +133,8 @@ public class MainFrame extends JFrame {
         }
     }
 
+    private final static int RANGE = 100;
+
     private void paintGame(Graphics2D g2, List<MapRectangle> mapRectangles) {
         g2.setPaint(Color.GRAY);
         g2.fill(new Rectangle2D.Double(0, 0, 800, 640));
@@ -155,7 +157,7 @@ public class MainFrame extends JFrame {
         double playerAngele = engine.getAngle();
 
         int c = 0;
-        for (; c < 200; c++) {
+        for (; c < RANGE; c++) {
             int x = (int) (playerX + c*cos(playerAngele));
             int y = (int) (playerY + c*sin(playerAngele));
             if (y >= 200 || y < 0 || x >= 200 || x < 0) break;
@@ -174,7 +176,7 @@ public class MainFrame extends JFrame {
         for (int i = 0; i < 512; i++) {
             double angle = playerAngele - 0.5 + i / (double) 512;
             c = 0;
-            for (; c < 200; c++) {
+            for (; c < RANGE; c++) {
                 int x = (int) (playerX + c * cos(angle));
                 int y = (int) (playerY + c * sin(angle));
                 if (y >= 200 || y < 0 || x >= 200 || x < 0) break;
@@ -186,19 +188,47 @@ public class MainFrame extends JFrame {
 
             g2.drawLine(playerX, playerY, visibleX, visibleY);
 
-            int lineX = 200 + i;
-
-            int div = (int) ( c * cos(angle - playerAngele));
-
-            int height;
-            if (div == 0) {
-                if (c == 0)
-                    c = 1;
-                height = 512 / c;
-            } else
-                height = 512 / div;
-
-            g2.drawLine(lineX, 100 - height / 2, lineX, 100 + height / 2);
+            drawLine(i, c, angle, playerAngele, g2);
+            //drawLineLikeInManual(i, c, angle, playerAngele, g2);
         }
+    }
+
+    private final static Color CEILING = new Color(162, 176, 174);
+    private final static Color WALL = new Color(56, 52, 53);
+    private final static Color FLOOR = new Color(139, 69, 19);
+
+    private void drawLine(int i, int c, double angle, double playerAngele,Graphics2D g2) {
+        int resulHeight = (int) (c * cos(angle - playerAngele));
+        //int resulHeight = c;
+        resulHeight = resulHeight - 200;
+
+        int lineX = 200 + i;
+        int lineYStart = 100 + resulHeight / 2;
+        int lineYEnd = 100 - resulHeight / 2;
+
+        g2.setPaint(CEILING);
+        g2.drawLine(lineX, 0, lineX, lineYStart);
+
+        g2.setPaint(WALL);
+        g2.drawLine(lineX, lineYStart, lineX, lineYEnd);
+
+        g2.setPaint(FLOOR);
+        g2.drawLine(lineX, lineYEnd, lineX, 200);
+    }
+
+    private void drawLineLikeInManual(int i, int c, double angle, double playerAngele, Graphics2D g2) {
+        int lineX = 200 + i;
+
+        int div = (int) ( c * cos(angle - playerAngele));
+
+        int height;
+        if (div == 0) {
+            if (c == 0)
+                c = 1;
+            height = 512 / c;
+        } else
+            height = 512 / div;
+
+        g2.drawLine(lineX, 100 - height / 2, lineX, 100 + height / 2);
     }
 }
