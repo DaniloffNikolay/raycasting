@@ -4,8 +4,8 @@ import java.io.*;
 
 public class Engine {
 
-    private byte playerX;
-    private byte playerY;
+    private int playerX;
+    private int playerY;
     private double angle; //угол куда смотрит игрок от оси х в радианах
     private byte[][] map;
 
@@ -43,11 +43,11 @@ public class Engine {
         return map;
     }
 
-    public byte getPlayerX() {
+    public int getPlayerX() {
         return playerX;
     }
 
-    public byte getPlayerY() {
+    public int getPlayerY() {
         return playerY;
     }
 
@@ -61,30 +61,37 @@ public class Engine {
      */
     public boolean stepForward() {
         if (angle > 5.6 || angle < 0.8)
-            playerX++;
+            return stepIn(playerX + 1, playerY);
         else if (angle >= 0.8 && angle <= 2.4)
-            playerY++;
+            return stepIn(playerX, playerY + 1);
         else if (angle > 2.4 && angle < 3.8)
-            playerX--;
+            return stepIn(playerX - 1, playerY);
         else if (angle >= 3.8) //&& angle <= 5.6 не надо т.к. это проверяется в первом условии
-            playerY--;
+            return stepIn(playerX, playerY - 1);
         else
             return false;
-        return true;
     }
 
     public boolean stepBack() {
         if (angle > 5.6 || angle < 0.8)
-            playerX--;
+            return stepIn(playerX - 1, playerY);
         else if (angle >= 0.8 && angle <= 2.4)
-            playerY--;
+            return stepIn(playerX, playerY - 1);
         else if (angle > 2.4 && angle < 3.8)
-            playerX++;
+            return stepIn(playerX + 1, playerY);
         else if (angle >= 3.8) //&& angle <= 5.6 не надо т.к. это проверяется в первом условии
-            playerY++;
+            return stepIn(playerX, playerY + 1);
         else
             return false;
-        return true;
+    }
+
+    private boolean stepIn(int x, int y) {
+        if (map[x][y] == 0) {
+            playerX = x;
+            playerY = y;
+            return true;
+        }
+        return false;
     }
 
     public double getAngle() {

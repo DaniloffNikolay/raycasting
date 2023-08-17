@@ -158,6 +158,7 @@ public class MainFrame extends JFrame {
         for (; c < 200; c++) {
             int x = (int) (playerX + c*cos(playerAngele));
             int y = (int) (playerY + c*sin(playerAngele));
+            if (y >= 200 || y < 0 || x >= 200 || x < 0) break;
             if (map[y][x] != 0) break;
         }
 
@@ -174,8 +175,9 @@ public class MainFrame extends JFrame {
             double angle = playerAngele - 0.5 + i / (double) 512;
             c = 0;
             for (; c < 200; c++) {
-                int x = (int) (playerX + c*cos(angle));
-                int y = (int) (playerY + c*sin(angle));
+                int x = (int) (playerX + c * cos(angle));
+                int y = (int) (playerY + c * sin(angle));
+                if (y >= 200 || y < 0 || x >= 200 || x < 0) break;
                 if (map[y][x] != 0) break;
             }
 
@@ -184,13 +186,19 @@ public class MainFrame extends JFrame {
 
             g2.drawLine(playerX, playerY, visibleX, visibleY);
 
-            int resulHeight = c - 200;
-
             int lineX = 200 + i;
-            int lineYStart = 100 + resulHeight / 2;
-            int lineYEnd = 100 - resulHeight / 2;
 
-            g2.drawLine(lineX, lineYStart, lineX, lineYEnd);
+            int div = (int) ( c * cos(angle - playerAngele));
+
+            int height;
+            if (div == 0) {
+                if (c == 0)
+                    c = 1;
+                height = 512 / c;
+            } else
+                height = 512 / div;
+
+            g2.drawLine(lineX, 100 - height / 2, lineX, 100 + height / 2);
         }
     }
 }
