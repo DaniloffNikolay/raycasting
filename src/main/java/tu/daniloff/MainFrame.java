@@ -133,7 +133,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private final static int RANGE = 100;
+    private final static int RANGE = 200;
 
     private void paintGame(Graphics2D g2, List<MapRectangle> mapRectangles) {
         g2.setPaint(Color.GRAY);
@@ -188,7 +188,7 @@ public class MainFrame extends JFrame {
 
             g2.drawLine(playerX, playerY, visibleX, visibleY);
 
-            drawLine(i, c, angle, playerAngele, g2);
+            drawLine(visibleX, visibleY, i, c, angle, playerAngele, g2);
             //drawLineLikeInManual(i, c, angle, playerAngele, g2);
         }
     }
@@ -197,7 +197,7 @@ public class MainFrame extends JFrame {
     private final static Color WALL = new Color(56, 52, 53);
     private final static Color FLOOR = new Color(139, 69, 19);
 
-    private void drawLine(int i, int c, double angle, double playerAngele,Graphics2D g2) {
+    private void drawLine(int visibleX, int playerY, int i, int c, double angle, double playerAngele,Graphics2D g2) {
         int resulHeight = (int) (c * cos(angle - playerAngele));
         //int resulHeight = c;
         resulHeight = resulHeight - 200;
