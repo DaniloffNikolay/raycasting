@@ -74,7 +74,17 @@ public class Engine {
     }
 
     public boolean stepBack() {
-        return false;
+        if (angle > 5.6 || angle < 0.8)
+            playerX--;
+        else if (angle >= 0.8 && angle <= 2.4)
+            playerY--;
+        else if (angle > 2.4 && angle < 3.8)
+            playerX++;
+        else if (angle >= 3.8) //&& angle <= 5.6 не надо т.к. это проверяется в первом условии
+            playerY++;
+        else
+            return false;
+        return true;
     }
 
     public double getAngle() {
